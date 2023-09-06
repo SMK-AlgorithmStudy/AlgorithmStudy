@@ -30,18 +30,15 @@ def selection_sort(N, A):
 def binary_search(N, A, X):
     start = 0
     end = N - 1
-
+    answer = []
     while start <= end:
         mid = (start + end) // 2
-        answer = []
-
         if int(A[mid]) > X:
-            for i in range(start, end+1):
-                answer.append(A[i])
+            for i in range(start, end + 1):
+                if int(A[i]) > X :
+                    answer.append(A[i])
             return answer
-        elif int(A[mid]) == X:
-            start = mid + 1
-        elif int(A[mid]) < X:
+        else:
             start = mid + 1
     return answer
 
@@ -56,7 +53,6 @@ if len(A) != N:
     print(N, "개의 숫자를 입력하셔야 합니다.", sep="")
 
 selection_sort(N, A)
-print(A)
 
 B = binary_search(N, A, X)
 print(*B)
