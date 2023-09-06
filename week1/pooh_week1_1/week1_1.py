@@ -35,15 +35,15 @@ def binary_search(N, A, X):
         mid = (start + end) // 2
         answer = []
 
-        if int(A[mid]) > X :
-            for i in range(mid, N):
+        if int(A[mid]) > X:
+            for i in range(start, end+1):
                 answer.append(A[i])
             return answer
-        elif int(A[mid]) == X :
-            end = mid - 1
-        else :
+        elif int(A[mid]) == X:
             start = mid + 1
-
+        elif int(A[mid]) < X:
+            start = mid + 1
+    return answer
 
 
 # N개의 정수를 입력받고, X보다 큰 수를 찾기 위한 정수 선언
@@ -51,11 +51,12 @@ N, X = map(int, input().split())
 
 # 수열 A
 list = input()
-A = list.split(" ")
-if len(A) != N :
+A = list.split()
+if len(A) != N:
     print(N, "개의 숫자를 입력하셔야 합니다.", sep="")
 
 selection_sort(N, A)
 print(A)
 
-print(binary_search(N, A, X))
+B = binary_search(N, A, X)
+print(*B)
