@@ -55,4 +55,7 @@ if len(A) != N:
 selection_sort(N, A)
 
 B = binary_search(N, A, X)
-print(*B)
+if B == []:
+    print("에러")
+else:
+    print(*B)
