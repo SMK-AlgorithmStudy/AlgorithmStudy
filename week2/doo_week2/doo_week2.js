@@ -84,21 +84,7 @@ function create_password(que){
     while(true){
         let x = que.dequeue(); // 첫번째 원소 추출
         
-        if(k%5==1){
-            x -= 1; 
-        }
-        else if(k%5==2){
-            x -= 2; 
-        }
-        else if(k%5==3){
-            x -= 3; 
-        }
-        else if(k%5==4){
-            x -= 4; 
-        }
-        else{
-            x -= 5; 
-        }
+        x-=k; // 인덱스값만큼 감소
 
         if(x<=0){
             x = 0;
