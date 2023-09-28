@@ -1,0 +1,108 @@
+// 백준 1991
+// 첫째 줄에는 이진 트리의 노드의 개수 N(1 ≤ N ≤ 26)이 주어진다. 
+// 둘째 줄부터 N개의 줄에 걸쳐 각 노드와 그의 왼쪽 자식 노드, 오른쪽 자식 노드가 주어진다. 
+// 노드의 이름은 A부터 차례대로 알파벳 대문자로 매겨지며, 항상 A가 루트 노드가 된다. 
+// 자식 노드가 없는 경우에는 .으로 표현한다.
+
+// 첫째 줄에 전위 순회, 둘째 줄에 중위 순회, 셋째 줄에 후위 순회한 결과를 출력한다. 
+// 각 줄에 N개의 알파벳을 공백 없이 출력하면 된다.
+
+const fs = require('fs');
+const INPUT_FILE = process.platform === 'linux' ? '/dev/stdin' : 'week4/input.txt';
+const input = require('fs').readFileSync(INPUT_FILE).toString().trim().split('\n');
+
+const N = input.shift(); //이진 트리의 노드의 개수
+const values = Array(N).map(()=>[]);
+
+for(let value of input){
+    let [x,y,z] = value.split(' ');
+    z = z.includes('\r')? z.replace('\r',''):z; // js입력값의 개행문자 삭제
+    values.push([x,y,z]);
+}
+
+class Node{
+    constructor(data,left,right){
+        this.data = data;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Tree{
+    constructor(){
+        this.root = null;
+    }
+    insert(data){
+        const leftNode = data[1]=="."? null:new Node(data[1],null,null) 
+        const rightNode = data[2]=="."? null:new Node(data[2],null,null)
+        // 왼,오 각각 노드로 감싸서 새로운 노드에 넣기
+        const newNode = new Node(data[0],leftNode,rightNode);
+
+        if(this.root==null){
+            this.root = newNode;
+            return;
+        }
+
+        const queue = [];
+        queue.push(this.root);        
+
+        while(queue.length!==0){
+            const currNode = queue.shift();
+            
+            if(currNode.left?.data == newNode.data){
+                currNode.left.left = newNode.left;
+                currNode.left.right = newNode.right;
+            } 
+            else if(currNode.right?.data == newNode.data){
+                currNode.right.left = newNode.left;
+                currNode.right.right = newNode.right;
+            }
+            else{
+                if(currNode.left!=null){
+                    queue.push(currNode.left);
+                }
+                if(currNode.right!=null){
+                    queue.push(currNode.right);
+                }
+            }
+        }
+    }
+}
+
+const tree = new Tree();
+for(let n=1;n<=N;n++){
+    tree.insert(values[n]);
+}
+
+// 전위순회
+let preArr = "";
+const recursivePreOrder = (node) => {
+    if(!node){ return; }
+    preArr += node.data;
+    recursivePreOrder(node.left);
+    recursivePreOrder(node.right);
+}
+recursivePreOrder(tree.root);
+console.log(preArr);
+
+// 중위순회
+let inArr = "";
+const recursiveInOrder = (node) => {
+    if(!node){ return; }
+    recursiveInOrder(node.left);
+    inArr+=node.data;
+    recursiveInOrder(node.right);
+}
+recursiveInOrder(tree.root);
+console.log(inArr);
+
+// 후위순회
+let postArr = "";
+const recursivePostOrder = (node) => {
+    if(!node){ return; }
+    recursivePostOrder(node.left);
+    recursivePostOrder(node.right);
+    postArr+=node.data;
+}
+recursivePostOrder(tree.root);
+console.log(postArr);
