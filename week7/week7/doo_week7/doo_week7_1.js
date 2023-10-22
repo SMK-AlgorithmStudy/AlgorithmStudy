@@ -13,14 +13,11 @@ const fs = require('fs');
 const INPUTFILE = process.platform === 'linux' ? '/dev/stdin' : 'week7/input.txt';
 const input = fs.readFileSync(INPUTFILE).toString().trim().split('\n');
 
-//console.log(typeof(input[0]),typeof(input[1]));
-//map(Number)했는데 왜 object임?? 숫자요소로 배열만들었는데.....ㅠㅠ
-
 const direction = [[1,2],[-1,2],[1,-2],[-1,-2],[2,1],[2,-1],[-2,1],[-2,-1]];
 let start,end,size,visited;
 
 // 최단길이 탐색이므로 bfs 사용
-function bfs(){
+const bfs = () => {
     queue = [[start[0],start[1],0]];
     while(!!queue.length){
         const [x,y,move] = queue.shift();
@@ -39,12 +36,16 @@ function bfs(){
     }
 }
 
-const n = input.shift(); // 테스크케이스 개수
-for(let j=1;j<=n;j++){
-    size = Number(input.shift());
-    start = input.shift().split(' ').map(Number);
-    end = input.shift().split(' ').map(Number);
-    visited = Array.from(Array(size),()=>Array(size).fill(0));
-
-    console.log(bfs());
+const sol = () => {
+    const n = input.shift(); // 테스트케이스 개수
+    for(let j=1;j<=n;j++){
+        size = Number(input.shift());
+        start = input.shift().split(' ').map(Number);
+        end = input.shift().split(' ').map(Number);
+        visited = Array.from(Array(size),()=>Array(size).fill(0));
+    
+        console.log(bfs());
+    }
 }
+
+sol();
